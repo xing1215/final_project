@@ -8,10 +8,16 @@ Project Title
 
 At this point, we have not decided which topic we are going to do, but we have several interested topics
 
-A. The negative impacts of E-cigarettes in adolescence \* Early-onset of smoking behavior \* increasing risks of addiction/reliance
-- Biological evidence is insufficient. So, we need more statistical and epidemiological results to show the negative association between e-cigarettes usage and the health condition of adolescence. - From NY Times: “San Francisco Bans Sale of Juul and Other E-Cigarettes”
+A. The negative impacts of E-cigarettes in adolescence
 
-B. Videogames - The relationship between playing videogames and real-life gun violence
+-   Early-onset of smoking behavior
+-   increasing risks of addiction/reliance
+-   Biological evidence is insufficient. So, we need more statistical and epidemiological results to show the negative association between e-cigarettes usage and the health condition of adolescence.
+-   From NY Times: “San Francisco Bans Sale of Juul and Other E-Cigarettes”
+
+B. Videogames
+
+-   The relationship between playing videogames and real-life gun violence
 
 Motivation
 ----------
