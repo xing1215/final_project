@@ -1,4 +1,4 @@
-proposal
+Final Project Proposal
 ================
 Ziyi Zhao (zz2603), Nankun Liu (nl2655), Xing Chen (xc2472), Ziyang Chen (zc2443), Lu Chen (lc3391)
 11/6/2019

@@ -1,5 +1,5 @@
 ---
-title: "proposal"
+title: "Final Project Proposal"
 author: "Ziyi Zhao (zz2603), Nankun Liu (nl2655), Xing Chen (xc2472), Ziyang Chen (zc2443), Lu Chen (lc3391)"
 date: "11/6/2019"
 output: github_document
