@@ -1,0 +1,11 @@
+---
+title: "NL_Gold"
+author: "Nankun"
+date: "2019/12/2"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
