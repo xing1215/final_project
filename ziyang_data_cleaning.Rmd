@@ -9,3 +9,36 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
+# 清理数据,计算每局比赛中各种野怪的击杀数量
+
+```{r}
+monster = read_csv("./leagueoflegends/monsters.csv")
+
+str(monster)
+summary(monster)
+
+monster = monster %>% 
+  filter(Team %in% c("bDragons", "bBarons", "bHeralds")) %>% 
+  group_by(Address, Type) %>% 
+  summarize(number = n()) %>% 
+  pivot_wider(
+    names_from = Type,
+    values_from = number
+  ) 
+
+monster[is.na(monster)] = 0
+
+monster = monster %>% 
+  janitor::clean_names()
+```
+
+# 将刚才清洗的数据与总体数据做合并
+
+```{r}
+overall = read_csv("./leagueoflegends/LeagueofLegends.csv") %>% 
+  janitor::clean_names()
+
+newdata = right_join(overall, monster, by = "address") %>% 
+  select(year, b_result, address:dragon)
+```
+
