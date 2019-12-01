@@ -7,6 +7,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(scales)
 ```
 
 # 清理数据,计算每局比赛中各种野怪的击杀数量
@@ -54,3 +55,37 @@ logistic_model %>% broom::tidy()
 logistic_model %>% broom::glance()
 ```
 
+# 尝试做一些可视化
+
+```{r}
+blank_theme <- theme_minimal() +
+  theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid = element_blank(),
+  axis.ticks = element_blank(),
+  plot.title = element_text(size = 14, face = "bold")
+  )
+
+overall %>% 
+  select(b_result, r_result) %>% 
+  mutate(b_wins = sum(b_result), r_wins = sum(r_result), total = b_wins + r_wins) %>% 
+  select(b_wins:total) %>%
+  pivot_longer(
+    b_wins:r_wins,
+    names_to = "team",
+    values_to = "game_won"
+  ) %>% 
+  filter(row_number() <= 2) %>% 
+  ggplot(aes(x = "", y = game_won, fill = team)) +
+  geom_bar(stat = "identity", width = 1) +
+  geom_text(aes(label = percent(game_won / total)), position = position_stack(vjust = 0.5)) +
+  coord_polar("y") +
+  labs(  
+    title = "Win rates of Blue and Red teams across all years"
+  ) +
+  scale_fill_manual(labels = c("Blue", "Red"), values = c("cadetblue1", "coral1")) + 
+  blank_theme +
+  theme(axis.text.x = element_blank())
+```
