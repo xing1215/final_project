@@ -42,3 +42,15 @@ newdata = right_join(overall, monster, by = "address") %>%
   select(year, b_result, address:dragon)
 ```
 
+# 尝试建立模型
+
+```{r}
+logistic_model = newdata %>% 
+  mutate(b_result = factor(b_result)) %>% 
+  glm(formula =  b_result ~ air_dragon + water_dragon + fire_dragon + earth_dragon + elder_dragon + rift_herald + baron_nashor + dragon, family = "binomial")
+ 
+logistic_model %>% broom::tidy()
+
+logistic_model %>% broom::glance()
+```
+
