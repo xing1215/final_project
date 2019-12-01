@@ -1,0 +1,57 @@
+---
+title: "Tower"
+author: "Xing Chen"
+date: "12/1/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readr)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+## read and clean the data
+
+```{r}
+tower = read_csv(file = "./data/structures.csv") 
+```
+
+```{r}
+tower = 
+  tower %>% 
+  janitor::clean_names() %>% 
+  filter(team == "bTowers", type == "OUTER_TURRET") %>% 
+  mutate(
+    address = str_remove(address, "http://matchhistory.na.leagueoflegends.com/en/#match-details/TRLH1/")
+  )
+```
+
+calculate the mean time group by match id
+
+```{r}
+tower = 
+  tower %>% 
+  group_by(address) %>% 
+  mutate(
+    outer_tower = mean(time, na.rm = TRUE)
+  )
+```
+
+
+
+
