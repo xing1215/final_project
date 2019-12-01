@@ -25,10 +25,45 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-```{r}
-gold = read_csv(file = "./data/gold.csv")
 
-gold_nm = gold %>% 
+notice: Gold difference - computed Blue minus Red
+
+
+```{r}
+#import#
+gold = read_csv(file = "./data/gold.csv")
+#cleaning#
+gold_cl = 
+  gold %>% 
+  janitor::clean_names() %>% 
+  filter(type == "golddiff") %>% 
+  mutate(
+    address = str_remove(address, "http://matchhistory.na.leagueoflegends.com/en/#match-details/TRLH1/")
+  ) %>% 
+  pivot_longer(
+  min_1:min_95,
+  names_to = "min", 
+  names_prefix = "min_",
+  values_to = "gold") %>% 
   drop_na()
+
+gold_ave =
+  gold_cl %>% 
+  group_by(address) %>% 
+  summarize(
+    golddiff_mean = mean(gold)
+  )
+
+```
+
+combine
+
+```{r}
+overall = 
+  read_csv(file = "./data/LeagueofLegends.csv") %>% 
+  janitor::clean_names() %>% 
+  mutate(address = str_remove(address, "http://matchhistory.na.leagueoflegends.com/en/#match-details/TRLH1/")) %>% 
+  select(address, b_result)
+overall
 ```
 
