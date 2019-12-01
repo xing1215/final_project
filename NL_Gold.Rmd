@@ -64,6 +64,18 @@ overall =
   janitor::clean_names() %>% 
   mutate(address = str_remove(address, "http://matchhistory.na.leagueoflegends.com/en/#match-details/TRLH1/")) %>% 
   select(address, b_result)
-overall
+
+gold_mg = 
+  left_join(overall, gold_ave, by = "address") %>% 
+  mutate(b_result = recode_factor(b_result, "1" = "win", "0" = "lose"))
+
+```
+
+Plot
+
+```{r}
+gold_mg %>% 
+  ggplot(aes(x = b_result, y = golddiff_mean)) + 
+  geom_boxplot()
 ```
 
