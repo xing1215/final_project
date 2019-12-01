@@ -98,3 +98,29 @@ gold_mg %>%
 ```
 
 <img src="NL_Gold_files/figure-gfm/unnamed-chunk-3-1.png" width="90%" />
+
+## logistic model
+
+``` r
+gold_log = gold_mg %>% 
+  glm(formula =  b_result ~ golddiff_mean, family = "binomial")
+ 
+gold_log %>% 
+  broom::tidy() %>% 
+  knitr::kable(digits = 3)
+```
+
+| term           | estimate | std.error | statistic | p.value |
+| :------------- | -------: | --------: | --------: | ------: |
+| (Intercept)    |  \-0.113 |     0.038 |   \-3.008 |   0.003 |
+| golddiff\_mean |  \-0.001 |     0.000 |  \-46.505 |   0.000 |
+
+``` r
+gold_log %>% 
+  broom::glance() %>% 
+  knitr::kable(digits = 3)
+```
+
+| null.deviance | df.null |     logLik |      AIC |      BIC | deviance | df.residual |
+| ------------: | ------: | ---------: | -------: | -------: | -------: | ----------: |
+|      10504.22 |    7619 | \-2319.047 | 4642.094 | 4655.971 | 4638.094 |        7618 |

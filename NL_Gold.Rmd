@@ -79,3 +79,18 @@ gold_mg %>%
   geom_boxplot()
 ```
 
+## logistic model
+
+```{r}
+gold_log = gold_mg %>% 
+  glm(formula =  b_result ~ golddiff_mean, family = "binomial")
+ 
+gold_log %>% 
+  broom::tidy() %>% 
+  knitr::kable(digits = 3)
+
+gold_log %>% 
+  broom::glance() %>% 
+  knitr::kable(digits = 3)
+```
+
