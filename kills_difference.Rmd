@@ -1,0 +1,96 @@
+---
+title: "Kills_difference"
+author: "Ziyi Zhao"
+date: "11/28/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+
+```
+
+# Difference of number of kills between Blue team and Red Team 
+
+Steps:
+* import dataset LeaguofLegends.csv and kills.csv.
+* use all data
+* extract address as key variable
+* merged kills.csv with key 
+* calculate difference of number of kills between blue team and red team
+
+
+```{r}
+lol <- read_csv("./data/LeagueofLegends.csv")
+
+kills <- read_csv("./data/kills.csv")
+
+lol_all <- lol %>% janitor::clean_names()
+
+## set key
+key <- pull(lol_all,address) %>% as_tibble()
+
+## merged the kills.csv with key
+colnames(key) <- "address"
+kills <- kills %>% janitor::clean_names()
+kills_all <- left_join(key, kills, by="address")
+
+## calculate kill difference between blue team and red team
+kills_diff <- kills_all %>% 
+  group_by(address,team) %>%
+  select(address,team) %>% 
+  summarize(n=n()) %>% 
+  pivot_wider(
+    names_from = "team",
+    values_from = "n") %>%
+  mutate(diff = bKills - rKills)
+
+## extract bResult from dataset
+outcome <- pull(lol_all,b_result) %>% as_tibble()
+colnames(outcome) <- "bresult"
+
+df <- bind_cols(kills_diff,outcome)
+
+```
+
+# Create plots to see realtionship between blue win and kill difference
+```{r}
+df %>% ggplot(aes(x=diff,y=bresult))+
+  geom_point()
+
+df %>%  ggplot((aes(x=bresult,y=diff,group = bresult)))+
+  geom_boxplot()+
+  coord_flip()
+
+df %>% ggplot(aes(x=diff,y=bresult))+
+  geom_point(alpha=0.5)+
+  stat_smooth(method="glm", se=FALSE, fullrange=TRUE, 
+              method.args = list(family=binomial))
+
+```
+
+
+
+# conduct logistics regression analysis about blue win and kill difference
+```{r}
+fit <- glm(bresult ~ diff, df, family = binomial)
+fit %>% broom::tidy() %>% 
+  mutate(OR = exp(estimate),
+         lower_CI = exp(estimate-1.96*std.error),
+         higher_CI = exp(estimate+1.96*std.error)) %>%
+  select(term,log_OR = estimate,OR,lower_CI,higher_CI,p.value) %>% 
+  knitr::kable(digits = 3)
+
+fit %>% broom::glance() %>% knitr::kable(digits = 3)
+
+```
+
+
+
+
+
+
+
+
